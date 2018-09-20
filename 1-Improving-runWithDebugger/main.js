@@ -1,28 +1,40 @@
-(function () {
-    // Works with one argument    
-    // function runWithDebugger(myFunction, args) {
-    //     debugger;
-    //     var parsedArgs = args.join();
-    //     myFunction(parsedArgs);
-    // }
+function runWithDebugger(myFunction, args) {
+  if (Array.isArray(args)) {
+    myFunction(...args);
+    return;
+  }
 
-     function runWithDebugger(myFunction, args) {
-        debugger;
-       
-        myFunction(...args);
-    }
+  if (typeof args === 'string' || typeof args === 'number') {
+    myFunction(args);
+    return;
+  }
 
-    function sayHiTo(name) {
-        console.log('hi ' + name);
-    }
+  throw new Error('Second argument of runWithDebugger function has incorrect type. '
+    + 'It should be an array, string or number.');
+}
 
-    function sayFullName(first, last) {
-        console.log(first + ' ' + last);
-    }
+function sayHiTo(name) {
+  console.log(`hi ${name}`);
+}
 
-    runWithDebugger(sayFullName, ['gordon', 'zhu']);
+function sayFullName(first, last) {
+  console.log(`${first} ${last}`);
+}
 
-    // runWithDebugger(sayFullName, ['gordon', 'zhu']); => 'gordon zhu'
+function logNumber(number) {
+  console.log(number);
+}
 
+function addNumbers(x, y) {
+  const z = x + y;
+  console.log(z);
+}
 
-})()
+runWithDebugger(sayHiTo, 'sasha'); // => 'hi sasha'
+runWithDebugger(sayHiTo, ['gordon']); // => 'hi gordon'
+runWithDebugger(sayFullName, ['gordon', 'zhu']); // => 'gordon zhu'
+runWithDebugger(logNumber, 100); // => 100
+runWithDebugger(addNumbers, [2, 4]); // => 6
+runWithDebugger(addNumbers, undefined); // => error
+runWithDebugger(addNumbers, null); // => error
+runWithDebugger(addNumbers, true); // => error
