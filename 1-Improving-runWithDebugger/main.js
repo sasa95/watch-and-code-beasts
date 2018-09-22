@@ -1,4 +1,5 @@
 function runWithDebugger(myFunction, args) {
+  debugger;
   if (Array.isArray(args)) {
     myFunction.apply(null, args);
     return;
