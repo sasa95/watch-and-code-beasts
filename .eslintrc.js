@@ -1,6 +1,10 @@
 module.exports = {
-  "extends": "airbnb-base",
+  "extends": [
+    "eslint:recommended",
+    "plugin:es5/no-es2016",
+  ],
   "rules": {
-    "no-console": 0
+    "no-console": 0,
+    "no-undef": 0
   }
 };

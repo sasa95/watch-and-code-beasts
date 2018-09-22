@@ -1,6 +1,6 @@
 function runWithDebugger(myFunction, args) {
   if (Array.isArray(args)) {
-    myFunction(...args);
+    myFunction.apply(null, args);
     return;
   }
 
@@ -14,11 +14,11 @@ function runWithDebugger(myFunction, args) {
 }
 
 function sayHiTo(name) {
-  console.log(`hi ${name}`);
+  console.log('hi ' + name);
 }
 
 function sayFullName(first, last) {
-  console.log(`${first} ${last}`);
+  console.log(first + ' ' + last);
 }
 
 function logNumber(number) {
@@ -26,7 +26,7 @@ function logNumber(number) {
 }
 
 function addNumbers(x, y) {
-  const z = x + y;
+  var z = x + y;
   console.log(z);
 }
 
