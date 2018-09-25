@@ -11,7 +11,7 @@ function runWithDebugger(myFunction, args) {
   }
 
   throw new Error('Second argument of runWithDebugger function has incorrect type. '
-    + 'It should be an array, string or number.');
++ 'It should be an array, string or number.');
 }
 
 function sayHiTo(name) {
