@@ -12,23 +12,8 @@
   window.librarySystem = librarySystem;
 }());
 
-librarySystem('sandwichLibrary', function(){
-  var breads = {
-    wheat: 'The healthy option',
-    white: 'The unhealthy option'
-  };
-
-  var fillings = {
-    turkey: 'For boring sandwiches',
-    cheese: 'For the vegetarians'
-  };
-
-  var sandwichLibrary = {
-    breads: breads,
-    fillings: fillings
-  };
-
-  return sandwichLibrary;
+librarySystem('app', function() {
+  return 'app';
 });
 
-console.log(librarySystem('sandwichLibrary'));
+console.log(librarySystem('app')); // 'app'
