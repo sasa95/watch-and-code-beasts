@@ -8,7 +8,63 @@
 
 <body>
   <h1>4. Creating libraries out of order</h1>
+  <script src="./tinytest.js"></script>
   <script src="./main.js"></script>
+  <script>
+    tests({
+      'It should be able to load and retrieve a library.': function () {
+        librarySystem('app', [], function () {
+          return 'app';
+        });
+        eq(librarySystem('app'), 'app');
+      },
+      'It should be able to inject dependencies into the callback.': function () {
+        librarySystem('dependency', [], function () {
+          return 'loaded dependency';
+        });
+
+        librarySystem('app', ['dependency'], function (dependency) {
+          return 'app with ' + dependency;
+        });
+        eq(librarySystem('app'), 'app with loaded dependency');
+      },
+      'It should be able to load libraries out of order.': function () {
+        librarySystem('workBlurb', ['name', 'company'], function (name, company) {
+          return name + ' works at ' + company;
+        });
+
+        librarySystem('name', [], function () {
+          return 'Gordon';
+        });
+
+        librarySystem('company', [], function () {
+          return 'Watch and Code';
+        });
+        eq(librarySystem('workBlurb'), 'Gordon works at Watch and Code');
+      },
+      'It should silently fail and return undefined if one or more dependencies are not met.': function () {
+        librarySystem('main', ['dependencyOne', 'dependencyTwo'], function (dependencyOne, dependencyTwo) {
+          return [dependencyOne, dependencyTwo];
+        });
+
+        librarySystem('dependencyTwo', [], function () {
+          return 'I am the second dependency';
+        });
+        eq(librarySystem('main'), undefined);
+      },
+      'It should run the callback for each library only once.': function () {
+        var callsCounter = 0;
+        librarySystem('runOnlyOnce', [], function () {
+          callsCounter++;
+        });
+
+        librarySystem('runOnlyOnce');
+        librarySystem('runOnlyOnce');
+
+        eq(callsCounter, 1);
+      }
+    });
+  </script>
 </body>
 
 </html>
