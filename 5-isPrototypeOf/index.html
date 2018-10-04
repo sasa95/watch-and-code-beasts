@@ -3,16 +3,79 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>5. isPrototypeOf</title>
+  <title>4. Creating libraries out of order</title>
 </head>
 
 <body>
-  <h1>5. isPrototypeOf</h1>
+  <h1>4. Creating libraries out of order</h1>
   <script src="./tinytest.js"></script>
   <script src="./main.js"></script>
   <script>
     tests({
-      
+      'It should be able to check if the passed object is prototype of another object.': function () {
+        var canine = {
+          bark: function () {
+            console.log('bark');
+          }
+        };
+
+        var dog = Object.create(canine);
+        dog.fetch = function () {
+          console.log('fetch');
+        };
+
+        var myDog = Object.create(dog);
+
+        eq(dog.isPrototypeOf(myDog), isPrototypeOf(dog, myDog));
+      },
+      'It should return false if the second argument is an empty object.': function () {
+        var canine = {
+          bark: function () {
+            console.log('bark');
+          }
+        };
+
+        var dog = Object.create(canine);
+        dog.fetch = function () {
+          console.log('fetch');
+        };
+
+        var myDog = Object.create(dog);
+        var empty = Object.create(null);
+
+        eq(dog.isPrototypeOf(empty), isPrototypeOf(dog, empty));
+      },
+      'It should work when Object.prototype is passed as the first argument': function () {
+        var canine = {
+          bark: function () {
+            console.log('bark');
+          }
+        };
+
+        var dog = Object.create(canine);
+        dog.fetch = function () {
+          console.log('fetch');
+        };
+
+        var myDog = Object.create(dog);
+        
+        eq(Object.prototype.isPrototypeOf(myDog), isPrototypeOf(Object.prototype, myDog));
+      },
+      'It should work for any number of prototype links': function () {
+        var canine = {
+          bark: function () {
+            console.log('bark');
+          }
+        };
+
+        var dog = Object.create(canine);
+        dog.fetch = function () {
+          console.log('fetch');
+        };
+
+        var myDog = Object.create(dog);
+        eq(true, isPrototypeOf(canine, myDog));
+      },
     });
   </script>
 </body>
