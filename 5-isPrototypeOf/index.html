@@ -11,70 +11,47 @@
   <script src="./tinytest.js"></script>
   <script src="./main.js"></script>
   <script>
+    var canine = {
+      bark: function () {
+        console.log('bark');
+      }
+    };
+    var dog = Object.create(canine);
+    dog.fetch = function () {
+      console.log('fetch');
+    };
+    var myDog = Object.create(dog);
+    var empty = Object.create(null);
+
     tests({
-      'It should be able to check if the passed object is prototype of another object.': function () {
-        var canine = {
-          bark: function () {
-            console.log('bark');
-          }
-        };
-
-        var dog = Object.create(canine);
-        dog.fetch = function () {
-          console.log('fetch');
-        };
-
-        var myDog = Object.create(dog);
-
-        eq(dog.isPrototypeOf(myDog), isPrototypeOf(dog, myDog));
+      'It should return true when first-argument object is found in second-argument object\'s prototype chain': function () {
+        eq(isPrototypeOf(dog, myDog), true);
+        eq(isPrototypeOf(canine, myDog), true);
       },
-      'It should return false if the second argument is an empty object.': function () {
-        var canine = {
-          bark: function () {
-            console.log('bark');
-          }
-        };
-
-        var dog = Object.create(canine);
-        dog.fetch = function () {
-          console.log('fetch');
-        };
-
-        var myDog = Object.create(dog);
-        var empty = Object.create(null);
-
-        eq(dog.isPrototypeOf(empty), isPrototypeOf(dog, empty));
+      'It should return false when first object is not found in second object\'s prototype chain': function () {
+        eq(isPrototypeOf(dog, empty), false);
       },
-      'It should work when Object.prototype is passed as the first argument': function () {
-        var canine = {
-          bark: function () {
-            console.log('bark');
-          }
-        };
-
-        var dog = Object.create(canine);
-        dog.fetch = function () {
-          console.log('fetch');
-        };
-
-        var myDog = Object.create(dog);
-        
-        eq(Object.prototype.isPrototypeOf(myDog), isPrototypeOf(Object.prototype, myDog));
+      'It should throw a TypeError when first argument is null or undefined': function () {
+        var isTypeError = false;
+        try {
+          isPrototypeOf(null, myDog);
+        } catch (e) {
+          isTypeError = (e instanceof TypeError);
+        }
+        eq(isTypeError, true);
       },
-      'It should work for any number of prototype links': function () {
-        var canine = {
-          bark: function () {
-            console.log('bark');
-          }
-        };
-
-        var dog = Object.create(canine);
-        dog.fetch = function () {
-          console.log('fetch');
-        };
-
-        var myDog = Object.create(dog);
-        eq(true, isPrototypeOf(canine, myDog));
+      'It should work for any number of prototype links.': function () {
+        eq(isPrototypeOf(canine, myDog), true);
+      },
+      'It should return false when second argument is null or undefined.': function () {
+        eq(isPrototypeOf(canine, null), false);
+        eq(isPrototypeOf(canine, undefined), false);
+      },
+      'It should return false if the second argument is a primitive data type.': function () {
+        eq(isPrototypeOf(String.prototype, ''), false);
+        eq(isPrototypeOf(Boolean.prototype, true), false);
+        eq(isPrototypeOf(Number.prototype, 1), false);
+        eq(isPrototypeOf(Symbol.prototype, Symbol()), false);
       },
     });
   </script>
