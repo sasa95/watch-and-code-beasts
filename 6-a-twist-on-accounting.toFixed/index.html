@@ -12,9 +12,59 @@
   <script src="./main.js"></script>
   <script>
     tests({
-      'It should...': function () {
-        eq(1, true);
+      'it should round 0.615 correctly to 0.62': function () {
+        eq(betterToFixed(0.615, 2), '0.62');
       },
+      'it should round 10.235 correctly to 10.24': function () {
+        eq(betterToFixed(10.235, 2), '10.24');
+      },
+      'it should round 1.005 correctly to 1.01': function () {
+        eq(betterToFixed(1.005, 2), '1.01');
+      },
+      'it should pad 1.5 correctly to 1.5000': function () {
+        eq(betterToFixed(1.5, 4), '1.5000');
+      },
+      '---------- kenny\'s tests ----------': function () { },
+      '"100" with 5 precision should return "100.00000"': function () {
+        eq(betterToFixed(100, 5), '100.00000');
+      },
+      '".005" with 2 precision should return "0.01"': function () {
+        eq(betterToFixed(.005, 2), '0.01');
+      },
+      '"1.005" with 2 precision return "1.01"': function () {
+        eq(betterToFixed(1.005, 2), '1.01');
+      },
+      '"12314.12342145" with 7 precision return "12314.1234215"': function () {
+        eq(betterToFixed(12314.12342145, 7), '12314.1234215');
+      },
+      'Precision greater than number of decimals': function () {
+        eq(betterToFixed(12314.12342145, 15), '12314.123421450000000');
+      },
+      '---------- james\' tests ----------': function () { },
+      'should return 0.62': function () {
+        eq(betterToFixed(.615, 2), '0.62');
+      },
+      'should return 10.24': function () {
+        eq(betterToFixed(10.235, 2), '10.24');
+      },
+      'should return 1.01': function () {
+        eq(betterToFixed(1.005, 2), '1.01');
+      },
+      'should return 0.236': function () {
+        eq(betterToFixed(.2356, 3), '0.236');
+      },
+      'should return 10.7': function () {
+        eq(betterToFixed(10.678, 1), '10.7');
+      },
+      'should return 10': function () {
+        eq(betterToFixed(10.235, 0), '10');
+      },
+      'should return 11': function () {
+        eq(betterToFixed(10.635, 0), '11');
+      },
+      'should return 1.00201': function () {
+        eq(betterToFixed(1.002005, 5), '1.00201');
+      }
     });
   </script>
 </body>
